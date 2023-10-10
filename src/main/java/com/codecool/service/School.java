@@ -9,6 +9,7 @@ import com.codecool.model.user.User;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class School {
     private final List<Room> rooms;
@@ -19,37 +20,41 @@ public class School {
         this.mentors = new ArrayList<>();
     }
 
-    public void addStudent(Student student) {
-        student.setStartInSchool();
-        rooms.get(0).addStudent(student);
-    }
-
-    public void getUsersStartedOnDate(LocalDate date) {
+    public List<String> getUsersStartedOnDate(LocalDate date) {
         // TODO: is it ok to print, not return?
         System.out.println("\nUsers in school with start date: " + date.toString());
         List<Student> allStudents = getAllStudents();
         List<User> allUsers = new ArrayList<>();
         allUsers.addAll(mentors);
         allUsers.addAll(allStudents);
-        allUsers.stream()
+        return allUsers.stream()
                 .filter(user -> user.getStartInSchool().equals(date))
                 .map(user -> user.getName())
-                .forEach(userName -> System.out.println(userName));
+                .peek(userName -> System.out.println(userName))
+                .toList();
     }
-    public void getAllStudentsInRoom(RoomColor color) {
+    public List<String> getAllStudentsInRoom(RoomColor color) {
         System.out.println("\nStudents in room: " + color.name());
-        rooms.stream()
+        return rooms.stream()
                 .filter(room -> room.getColor().equals(color))
                 .flatMap(room -> room.getStudnetsNames().stream())
-                .forEach(sudentNme -> System.out.println(sudentNme));
+                .peek(sudentNme -> System.out.println(sudentNme))
+                .toList();
     }
 
-    public void getStudentsAllwaysPresent() {
+    public List<String> getStudentsAllwaysPresent() {
         System.out.println("\nStudents allways present: ");
         List<Student> allStudents = getAllStudents();
-        allStudents.stream()
+        return allStudents.stream()
                 .filter(student -> student.isAllwaysPreset())
-                .forEach(student -> System.out.println(student.getName()));
+                .map(student -> student.getName())
+                .peek(studentName -> System.out.println(studentName))
+                .toList();
+    }
+
+    public void addStudent(Student student) {
+        student.setStartInSchool();
+        rooms.get(0).addStudent(student);
     }
 
     public void addMentor(Mentor mentor, RoomColor roomColor) {
