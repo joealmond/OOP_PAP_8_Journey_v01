@@ -17,7 +17,7 @@ public class Mentor extends User {
     }
 
     public void setRoomColor(RoomColor roomColor) {
-        // TODO: Not just scholl can set room! Is it ok?
+        // TODO: Not just school can set room! Is it ok?
         this.roomColor = roomColor;
         System.out.println("Mentor set in room " + roomColor.name());
     }
